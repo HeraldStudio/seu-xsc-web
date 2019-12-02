@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="welcome">
     <div class="bg">
       <img class="bg-big-blue-block" src="../assets/background/big-blue-block.svg" />
       <img class="bg-big-orange-block" src="../assets/background/big-orange-block.svg" />
@@ -22,7 +22,7 @@
 <script>
 import { Button } from "element-ui";
 export default {
-  name: "home",
+  name: "welcome",
   components: {
     "el-button": Button
   }

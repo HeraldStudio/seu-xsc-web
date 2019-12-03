@@ -8,9 +8,9 @@
       <img class="seu-logo" src="../assets/seu-logo.svg" />
       <div></div>
       <img class="seu-font" src="../assets/seu-font.svg" />
-      <p class="big-title">学工一站通平台</p>
+      <p class="big-title">学工一站通</p>
       <div class="title-decoration"></div>
-      <el-button style="margin-top:40px;width: 160px; font-size: 16px;" type="success" size="medium">点击进入</el-button>
+      <el-button style="margin-top:40px;width: 160px; font-size: 16px;" type="success" size="medium" @click="gotoHome">点击进入</el-button>
     </div>
     <div class="copyright">
       <p>版权所有 © 东南大学学工部学生处 联系方式：xxxxxxxxxxx</p>
@@ -25,11 +25,16 @@ export default {
   name: "welcome",
   components: {
     "el-button": Button
+  },
+  methods:{
+    gotoHome(){
+      this.$router.push('/home');
+    }
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .bg {
   z-index: -10;
   position: fixed;

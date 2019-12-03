@@ -1,22 +1,35 @@
 <template>
     <background title="赵拯基，你好！" desc="欢迎来到「学工一站通」">
-        <p>中国共产党第十九次全国代表大会（简称党的十九大）于2017年10月18日至10月24日在北京召开。
-2017年10月18日上午9:00，中国共产党第十九次全国代表大会在人民大会堂开幕。习近平代表第十八届中央委员会向大会作了题为《决胜全面建成小康社会 夺取新时代中国特色社会主义伟大胜利》的报告。
-这次大会的主题是：不忘初心，牢记使命，高举中国特色社会主义伟大旗帜，决胜全面建成小康社会，夺取新时代中国特色社会主义伟大胜利，为实现中华民族伟大复兴的中国梦不懈奋斗。
-党的十九大，是在全面建成小康社会决胜阶段、中国特色社会主义发展关键时期召开的一次十分重要的大会。承担着谋划决胜全面建成小康社会、深入推进社会主义现代化建设的重大任务，事关党和国家事业继往开来，事关中国特色社会主义前途命运，事关最广大人民根本利益。 [1] 
-2017年10月24日，中国共产党第十九次全国代表大会在选举产生新一届中央委员会和中央纪律检查委员会，通过关于十八届中央委员会报告的决议、关于十八届中央纪律检查委员会工作报告的决议、关于《中国共产党章程（修正案）》的决议后，在人民大会堂胜利闭幕。 [2-3] </p>
+        <div class="menu">
+            <menu-item :icon="lixiaoIcon" title="节假日行程登记" route="/lixiao"></menu-item>
+            <menu-item :icon="qingjiaIcon" title="请假登记" route="/qingjia"></menu-item>
+            <menu-item :icon="qingjiaIcon" title="请假登记" route="/qingjia"></menu-item>
+            <menu-item :icon="qingjiaIcon" title="请假登记" route="/qingjia"></menu-item>
+            <menu-item :icon="qingjiaIcon" title="请假登记" route="/qingjia"></menu-item>
+        </div>
     </background>
 </template>
 
 <script>
 import Background from '../components/Background.vue'
+import MenuItem from '../components/MenuItem.vue'
+import lixiaoIcon from '../assets/menu-icon/lixiao.svg';
+import qingjiaIcon from '../assets/menu-icon/qingjia.svg';
 export default {
     components:{
-        background: Background
+        background: Background,
+        'menu-item':MenuItem,
+    },
+    data(){
+        return {lixiaoIcon, qingjiaIcon}
     }
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.menu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div :to="route" class="menu-item">
+      <div class="role-hint">{{role}}</div>
       <div class="icon-bg">
           <img :src="icon" class="icon"/>
       </div>
@@ -11,7 +12,7 @@
 
 <script>
 export default {
-    props: ['icon','title', 'route']
+    props: ['icon','title', 'route', 'role']
 }
 </script>
 
@@ -20,18 +21,25 @@ export default {
     margin: 8px;
     background-color:#f8f8f8;
     border-radius: 5px;
-    flex-basis: 100px;
+    flex-basis: 70px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 15px 10px;
+    .role-hint {
+        font-size: 12px;
+        background-color: #FFF8B6;
+        border-radius:5px;
+        margin-bottom: 10px;
+        padding: 5px;
+    }
     .icon-bg {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border-radius: 100px;
         background-color:#f0f0f0;
-        padding: 20px;
+        padding: 10px;
         .icon {
             width:100%;
         }
@@ -41,6 +49,7 @@ export default {
         font-weight: bold;
         color:#005A3A;
         font-size:14px;
+        white-space: nowrap;
     }
 }
 </style>

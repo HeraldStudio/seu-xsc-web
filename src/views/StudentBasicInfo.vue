@@ -101,8 +101,9 @@ export default {
     search() {
       this.dialogVisible = true;
     },
-    showDetail(row, col) {
-        console.log(row, col);
+    //showDetail(row, col) {
+    showDetail() {
+        // console.log(row, col);
         this.dialogVisible = true;
     }
   }

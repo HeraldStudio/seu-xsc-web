@@ -1,5 +1,5 @@
 <template>
-  <div :to="route" class="menu-item">
+  <div @click="routerPush" class="menu-item">
       <div class="role-hint">{{role}}</div>
       <div class="icon-bg">
           <img :src="icon" class="icon"/>
@@ -12,7 +12,12 @@
 
 <script>
 export default {
-    props: ['icon','title', 'route', 'role']
+    props: ['icon','title', 'route', 'role'],
+    methods: {
+        routerPush(){
+            this.$router.push(this.route)
+        }
+    }
 }
 </script>
 

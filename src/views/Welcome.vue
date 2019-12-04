@@ -28,7 +28,7 @@ export default {
   },
   methods:{
     gotoHome(){
-      this.$router.push('/home');
+      this.$router.replace('/home');
     }
   }
 };

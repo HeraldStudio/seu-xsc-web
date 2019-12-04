@@ -8,7 +8,8 @@
     </div>
     <div class="app-content-wrapper">
     <div class="header">
-      <img class="home-buttom" src="../assets/home.svg" />
+      <img v-if="!isHome" class="home-buttom" src="../assets/home.svg" @click="gotoHome"/>
+      <div v-else style="margin-left:10px;"></div>
       <img class="seu-logo" src="../assets/seu-logo.svg" />
       <div class="title">学工一站通</div>
       <div class="space"></div>
@@ -16,7 +17,8 @@
     </div>
     <div class="app-content">
       <h2 class="app-title">{{title}}</h2>
-      <p class="app-desc">{{desc}}</p>
+      <p v-if="desc" class="app-desc">{{desc}}</p>
+      <div v-else style="margin-top:20px;"></div>
       <div class="panel">
         <slot></slot>
       </div>
@@ -27,7 +29,13 @@
 
 <script>
 export default {
-  props: ["title", "desc", "isHome"]
+  props: {"title":{type:String, required:true}, "desc":{type:String, default:''}, "isHome":{type:Boolean, default:false}},
+  methods: {
+    gotoHome(){
+      this.$router.replace('/home');
+    }
+  }
+
 };
 </script>
 
@@ -165,7 +173,7 @@ export default {
     border-radius: 5px;
     margin: 0 20px;
     margin-bottom: 30px;
-    padding: 15px;
+    padding: 15px 17px;
   }
   @media screen and (min-width: 600px) {
     .panel {

@@ -15,7 +15,9 @@ export default {
     props: ['icon','title', 'route', 'role'],
     methods: {
         routerPush(){
-            this.$router.push(this.route)
+            if(this.route){
+                this.$router.push(this.route);
+            }
         }
     }
 }

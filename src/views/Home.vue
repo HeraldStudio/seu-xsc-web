@@ -3,7 +3,7 @@
         <div class="menu">
             <menu-item :icon="basicInfoIcon" title="学生基本信息速查" route="/student-basic-info" role="辅导员/学生处"></menu-item>
             <menu-item :icon="curriculumIcon" title="学生课表查询" role="辅导员/学生处"></menu-item>
-            <menu-item :icon="gradeIcon" title="学生成绩查询" role="辅导员/学生处"></menu-item>
+            <menu-item :icon="gradeIcon" title="学生成绩查询" route="/student-grade" role="辅导员/学生处"></menu-item>
             <menu-item :icon="outingIcon" title="节假日行程登记" role="学生"></menu-item>
             <menu-item :icon="takeLeaveIcon" title="请假登记" role="学生"></menu-item>
             <menu-item :icon="takeLeaveIcon" title="请假审批" role="辅导员"></menu-item>

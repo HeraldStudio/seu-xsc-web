@@ -9,6 +9,7 @@
             <menu-item :icon="takeLeaveIcon" title="请假审批" role="辅导员"></menu-item>
             <menu-item :icon="outingIcon" title="离/在校情况查询" role="辅导员/学生处"></menu-item>
             <menu-item :icon="locateIcon" title="应急在校跟踪" role="学生处"></menu-item>
+            <menu-item :icon="vacationlist" title="节假日列表管理"  route="/vacation-list" role="学生处"></menu-item>
         </div>
     </background>
 </template>
@@ -22,13 +23,14 @@ import takeLeaveIcon from '../assets/menu-icon/takeLeaveIcon.svg';
 import locateIcon from '../assets/menu-icon/locateIcon.svg';
 import curriculumIcon from '../assets/menu-icon/curriculumIcon.svg';
 import gradeIcon from '../assets/menu-icon/gradeIcon.svg';
+import vacationlist from '../assets/menu-icon/vacationlist.svg';
 export default {
     components:{
         background: Background,
         'menu-item':MenuItem,
     },
     data(){
-        return {outingIcon, takeLeaveIcon, basicInfoIcon, locateIcon, curriculumIcon, gradeIcon}
+        return {outingIcon, takeLeaveIcon, basicInfoIcon, locateIcon, curriculumIcon, gradeIcon, vacationlist}
     }
 }
 </script>

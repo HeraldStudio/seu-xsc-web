@@ -10,7 +10,7 @@
         :color="startTime.color"
         :size="startTime.size"
         :timestamp="startTime.timestamp" placement="top">
-        <p style="font-size:20px;font-weight:bold;font-family:KaiTi">{{ startTime.content }}</p>
+        <p style="font-size:20px;font-family:微软雅黑">{{ startTime.content }}</p>
       </el-timeline-item>
       <el-timeline-item
         v-for="(activity, index) in activities"
@@ -55,7 +55,7 @@
         :color="endTime.color"
         :size="endTime.size"
         :timestamp="endTime.timestamp" placement="top">
-        <p style="font-size:20px;font-weight:bold;font-family:KaiTi">{{ endTime.content }}</p>
+        <p style="font-size:20px;font-family:微软雅黑">{{ endTime.content }}</p>
       </el-timeline-item>
     </el-timeline>
     <el-dialog  

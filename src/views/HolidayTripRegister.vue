@@ -180,6 +180,8 @@ export default {
     createTrip() {
       if(this.newTimestamp === ''){
         this.$message('请选择你的离/返校时间！')
+      }else if(this.isTimeOverlap()){
+        this.$message('请勿与已有行程冲突！')
       }else if(this.newTarget === ''){
         this.$message('请输入你的详细去向！')
       }else if(this.newEmergencyPeople === ''){
@@ -197,6 +199,13 @@ export default {
           emergencyPeople: this.newEmergencyPeople,
           isNanjing: this.newIsNanjing         // 是否离开南京  √：el-icon-check   ×：el-icon-close
       })
+      this.activities.sort((a,b) => {
+        if(a.timestamp<b.timestamp){
+          return -1
+        }else{
+          return 1
+        }
+      })
       this.newCause = '回家'
       this.timestamp = ''
       this. newTarget = ''
@@ -205,12 +214,20 @@ export default {
       }
 
     },
-    handleClose() {
+    handleClose(){
       this.newCause = '回家'
       this.timestamp = ''
       this. newTarget = ''
       this.newIsNanjing = true
       this.CreateTrip = false
+    },
+    isTimeOverlap(){
+      for(let element of this.activities){
+        if((this.newTimestamp[0] <= element.backTimestamp) && (this.newTimestamp[1] >= element.timestamp)){
+          return true
+        }
+      }
+      return false
     }
   }
 };

@@ -57,7 +57,6 @@
 <script>
 import Background from "../components/Background.vue";
 import { Input, Table, TableColumn, Dialog, Menu, MenuItem} from "element-ui";
-import { type } from 'os';
 export default {
   components: {
     background: Background,
@@ -187,7 +186,7 @@ export default {
   methods: {
     changeType(key) {
       this.type = key;
-      this.searchHint = type === "student" ? "一卡通号/学号/姓名" : "科目";
+      this.searchHint = this.type === "student" ? "一卡通号/学号/姓名" : "科目";
       this.$refs.filterTable.clearFilter()
     },
     showDetail() {

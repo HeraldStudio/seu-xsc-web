@@ -1,11 +1,17 @@
 <template>
   <background title="学生成绩查询">
+    <el-menu :default-active="type" class="el-menu-demo" mode="horizontal" @select="changeType">
+      <el-menu-item index="student">学生</el-menu-item>
+      <el-menu-item index="subject">科目</el-menu-item>
+    </el-menu>
+    <!--
     <div class="radio-pannel">
       <el-radio-group v-model="type" @change="changeType(type)" class="types">
         <el-radio label="student">学生</el-radio>
         <el-radio label="subject">科目</el-radio>
       </el-radio-group>
     </div>
+    -->
     <div class="search-pannel">
       <div class="search-container">
         <el-input v-model="searchKey" :placeholder="searchHint"></el-input>
@@ -34,26 +40,34 @@
       </el-dialog>
     </div>
     <el-dialog title="详情列表" :visible.sync="detailForSubject" width="360px">
-      <div>
-        <p class="content-title">总览</p>
-        <p class="content-title">不及格6/180</p>
+      <div class="title-header">
+        <p class="content" @click="detailForSubjectList=detailForSubjectListFail">不及格 {{failcount + '/' + total}}</p>
+        <p @click="detailForSubjectList=detailForSubjectListTotal">全选</p>
       </div>
+      <el-table :data="detailForSubjectList" style="width: 100%" >
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="cardnum" label="一卡号"></el-table-column>
+        <el-table-column prop="schoolNum" label="学号"></el-table-column>
+        <el-table-column prop="grade" label="成绩"></el-table-column>
+      </el-table>
     </el-dialog>
   </background>
 </template>
 
 <script>
 import Background from "../components/Background.vue";
-import { RadioGroup, Radio, Input, Table, TableColumn, Dialog } from "element-ui";
+import { Input, Table, TableColumn, Dialog, Menu, MenuItem} from "element-ui";
 export default {
   components: {
     background: Background,
-    "el-radio-group": RadioGroup,
-    "el-radio": Radio,
+    // "el-radio-group": RadioGroup,
+    // "el-radio": Radio,
     "el-input": Input,
     "el-table": Table,
     "el-dialog": Dialog,
-    "el-table-column": TableColumn
+    "el-table-column": TableColumn,
+    "el-menu": Menu,
+    "el-menu-item":  MenuItem
   },
   data() {
     return {
@@ -134,7 +148,7 @@ export default {
         },
 
       ],
-      detailForSubjectList: [
+      detailForSubjectListTotal: [
        {
           name: "赵拯基",
           schoolNum: "060174xx",
@@ -154,14 +168,25 @@ export default {
           grade: 80
         }
       ],
-
+      detailForSubjectListFail: [
+       {
+          name: "赵拯基",
+          schoolNum: "060174xx",
+          cardnum: "213171xxx",
+          grade: 55
+        },
+      ],
+      detailForSubjectList: [],
       detailForStudent: false,
       detailForSubject: false,
+      failcount: "1",
+      total: "180"
     };
   },
   methods: {
-    changeType(type) {
-      this.searchHint = type === "student" ? "一卡通号/学号/姓名" : "科目";
+    changeType(key) {
+      this.type = key;
+      this.searchHint = this.type === "student" ? "一卡通号/学号/姓名" : "科目";
       this.$refs.filterTable.clearFilter()
     },
     showDetail() {
@@ -182,7 +207,7 @@ export default {
         return true
       }
     },
-    selectStyle({row}){
+    selectStyle({row}) {
       if (row.grade >= 96) {
         return 'success-row';
       } else if (row.grade < 60) {
@@ -193,6 +218,9 @@ export default {
     async search() {
       console.log(this.searchKey);
     }
+  },
+  created() {
+    this.detailForSubjectList = this.detailForSubjectListTotal;
   }
 };
 </script>
@@ -212,6 +240,25 @@ export default {
 }
 .search-container {
   display: flex;
+}
+.title-header {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+.content {
+  color: #F56C6C;
+}
+.el-menu-demo {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  
+  .el-menu-item {
+    height: 35px;
+    line-height: 35px;
+  }
 }
 
 </style>

@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     reloadList(){
-
+      //toDo: 加载节假日表格API
     },
     deleteRow(list, data) {
       this.$confirm("是否删除选中行", "提示", {
@@ -125,6 +125,7 @@ export default {
         list.forEach(x => {
           data.splice(data.indexOf(x), 1);
         });
+        //toDo: 删除节假日API
         this.$message({
           message: "删除成功",
           center: "true",
@@ -163,6 +164,7 @@ export default {
           start: "",
           end: ""
         };
+        //toDo: 增加节假日API
         this.reloadList()
       } else if (index.start.getTime() > index.end.getTime()) {
         this.$message({
@@ -186,13 +188,18 @@ export default {
           start: "",
           end: ""
         };
+        //toDo: 增加节假日API
         this.reloadList()
       }
     },
     selectChange(data) {
       this.multipleSelection = data;
     }
-  }
+  },
+  mounted: ()=>{
+      this.reloadList()
+    }
+  
 };
 </script>
 

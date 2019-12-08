@@ -39,8 +39,8 @@
           <div class="value">{{detail.phoneNum}}</div>
         </div>
         <div class="detail-button">
-          <el-button type="warning">驳回</el-button>
-          <el-button type="primary">同意</el-button>
+          <el-button type="warning" @click="reject()">驳回</el-button>
+          <el-button type="primary" @click="approval()">同意</el-button>
         </div>
       </div>
     </el-dialog>
@@ -49,7 +49,7 @@
       <div class="search-container">
         <el-input v-model="searchText" placeholder="一卡通号/学号/姓名"></el-input>
       </div>
-      <el-radio-group v-model="type" @change="(x)=>{console.log(x)}">
+      <el-radio-group v-model="type" >
         <el-radio label>所有</el-radio>
         <el-radio label="事假">事假</el-radio>
         <el-radio label="病假">病假</el-radio>
@@ -146,6 +146,16 @@ export default {
     showDetail(row) {
       this.detail = row;
       this.dialogVisible = true;
+    },
+    approval(){
+      this.tableData.splice(this.tableData.indexOf(this.detail),1)
+      //toDo: 同意申请API
+      this.dialogVisible=false
+    },
+    reject(){
+      this.tableData.splice(this.tableData.indexOf(this.detail),1)
+      //toDo: 拒绝申请API
+      this.dialogVisible =false
     }
   }
 };

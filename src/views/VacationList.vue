@@ -39,10 +39,10 @@
       style="width: 100%"
       @selection-change="selectChange"
     >
-      <el-table-column class="el-table-column" type="selection" width="30" ></el-table-column>
-      <el-table-column class="el-table-column" prop="name" label="名称" width="70"></el-table-column>
-      <el-table-column class="el-table-column" prop="start" label="开始时间" width="95"></el-table-column>
-      <el-table-column class="el-table-column" prop="end" label="结束时间" width="95"></el-table-column>
+      <el-table-column class="el-table-column" type="selection"  width="27%"></el-table-column>
+      <el-table-column class="el-table-column" prop="name" label="名称" width="70%"></el-table-column>
+      <el-table-column class="el-table-column" prop="start" label="开始时间" ></el-table-column>
+      <el-table-column class="el-table-column" prop="end" label="结束时间" ></el-table-column>
     </el-table>
     <el-button
       class="deleteButton"
@@ -67,8 +67,6 @@ import {
   formItem,
   Input,
   DatePicker,
-  Message,
-  MessageBox
 } from "element-ui";
 
 export default {
@@ -113,7 +111,7 @@ export default {
   },
   methods: {
     deleteRow(list, data) {
-      MessageBox.confirm("是否删除选中行", "提示", {
+      this.$confirm("是否删除选中行", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -123,7 +121,7 @@ export default {
         list.forEach(x => {
         data.splice(data.indexOf(x), 1);
       });
-        Message({
+        this.$message({
           message: "删除成功",
           center: "true",
           customClass: "message"
@@ -133,15 +131,15 @@ export default {
     },
     newRow(index, data) {
       if (!index.name) {
-        Message({
+        this.$message({
           message: "名称不能为空!",
           type: "warning",
           center: "true",
           customClass: "message"
         });
       } else if (index.start.getTime() > index.end.getTime()) {
-        Message({
-          message: "起始时间晚于结束时间!",
+        this.$message({
+          message: "开始时间晚于结束时间!",
           type: "warning",
           center: "true",
           customClass: "message"
@@ -174,7 +172,7 @@ export default {
 }
 .deleteButton {
   margin-top: 1em;
-  margin-left: 3em;
+  margin-left: 2.5em;
 }
 .message {
   margin-top: 2.2em;

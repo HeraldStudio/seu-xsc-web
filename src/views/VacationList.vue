@@ -38,11 +38,12 @@
       stripe="true"
       style="width: 100%"
       @selection-change="selectChange"
+      :default-sort="{prop: 'start', order: 'ascending'}"
     >
-      <el-table-column class="el-table-column" type="selection"  width="27%"></el-table-column>
+      <el-table-column class="el-table-column" type="selection" width="27%"></el-table-column>
       <el-table-column class="el-table-column" prop="name" label="名称" width="70%"></el-table-column>
-      <el-table-column class="el-table-column" prop="start" label="开始时间" ></el-table-column>
-      <el-table-column class="el-table-column" prop="end" label="结束时间" ></el-table-column>
+      <el-table-column class="el-table-column" prop="start" label="开始时间"></el-table-column>
+      <el-table-column class="el-table-column" prop="end" label="结束时间"></el-table-column>
     </el-table>
     <el-button
       class="deleteButton"
@@ -66,7 +67,7 @@ import {
   form,
   formItem,
   Input,
-  DatePicker,
+  DatePicker
 } from "element-ui";
 
 export default {
@@ -93,7 +94,7 @@ export default {
         {
           name: "元旦节",
           start: "2019/12/31",
-          end: "2019/1/1"
+          end: "2020/1/1"
         },
         {
           name: "清明节",
@@ -115,19 +116,18 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-        customClass:"confirm",
-        center:true
-      }).then(()=>{
+        customClass: "confirm",
+        center: true
+      }).then(() => {
         list.forEach(x => {
-        data.splice(data.indexOf(x), 1);
-      });
+          data.splice(data.indexOf(x), 1);
+        });
         this.$message({
           message: "删除成功",
           center: "true",
           customClass: "message"
         });
       });
-      
     },
     newRow(index, data) {
       if (!index.name) {
@@ -137,6 +137,27 @@ export default {
           center: "true",
           customClass: "message"
         });
+      } else if (index.start == "") {
+        this.$message({
+          message: "必须填写开始时间!",
+          type: "warning",
+          center: "true",
+          customClass: "message"
+        });
+      } else if (index.end == "") {
+        let d = {
+          name: index.name,
+          start: `${index.start.getFullYear()}/${index.start.getMonth() +
+            1}/${index.start.getDate()}`,
+          end: `未定义`
+        };
+
+        data.push(d);
+        this.inputData = {
+          name: "",
+          start: "",
+          end: ""
+        };
       } else if (index.start.getTime() > index.end.getTime()) {
         this.$message({
           message: "开始时间晚于结束时间!",
@@ -147,11 +168,18 @@ export default {
       } else {
         let d = {
           name: index.name,
-          start: `${index.start.getFullYear()}/${index.start.getMonth()}/${index.start.getDate()}`,
-          end: `${index.end.getFullYear()}/${index.end.getMonth()}/${index.end.getDate()}`
+          start: `${index.start.getFullYear()}/${index.start.getMonth() +
+            1}/${index.start.getDate()}`,
+          end: `${index.end.getFullYear()}/${index.end.getMonth() +
+            1}/${index.end.getDate()}`
         };
 
         data.push(d);
+        this.inputData = {
+          name: "",
+          start: "",
+          end: ""
+        };
       }
     },
     selectChange(data) {
@@ -179,10 +207,10 @@ export default {
   font-size: 20px;
   height: 2.5em;
 }
-.confirm{
- width:80%
+.confirm {
+  width: 80%;
 }
-.el-table-column{
-  text-align:right;
+.el-table-column {
+  text-align: right;
 }
 </style>

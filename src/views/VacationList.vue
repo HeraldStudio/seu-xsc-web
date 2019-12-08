@@ -111,6 +111,9 @@ export default {
     };
   },
   methods: {
+    reloadList(){
+
+    },
     deleteRow(list, data) {
       this.$confirm("是否删除选中行", "提示", {
         confirmButtonText: "确定",
@@ -127,6 +130,9 @@ export default {
           center: "true",
           customClass: "message"
         });
+        this.reloadList()
+      }).catch(()=>{
+
       });
     },
     newRow(index, data) {
@@ -151,13 +157,13 @@ export default {
             1}/${index.start.getDate()}`,
           end: `未定义`
         };
-
         data.push(d);
         this.inputData = {
           name: "",
           start: "",
           end: ""
         };
+        this.reloadList()
       } else if (index.start.getTime() > index.end.getTime()) {
         this.$message({
           message: "开始时间晚于结束时间!",
@@ -180,6 +186,7 @@ export default {
           start: "",
           end: ""
         };
+        this.reloadList()
       }
     },
     selectChange(data) {

@@ -7,7 +7,7 @@
             <menu-item :icon="outingIcon" title="节假日行程登记" route="/holiday-trip-register" role="学生"></menu-item>
             <menu-item :icon="takeLeaveIcon" title="请假登记" role="学生"></menu-item>
             <menu-item :icon="takeLeaveIcon" title="请假审批" role="辅导员"></menu-item>
-            <menu-item :icon="outingIcon" title="离/在校情况查询" role="辅导员/学生处"></menu-item>
+            <menu-item :icon="outingIcon" title="离/在校情况查询" route="/locate-student" role="辅导员/学生处"></menu-item>
             <menu-item :icon="locateIcon" title="应急在校跟踪" role="学生处"></menu-item>
             <menu-item :icon="vacationlist" title="节假日列表管理"  route="/vacation-list" role="学生处"></menu-item>
         </div>
@@ -42,16 +42,6 @@ export default {
         }
     },
     methods: {
-        // toHolidayTripRegister() {
-        //     if(this.isHoliday){
-        //         this.$router.push('/holiday-trip-register')
-        //     }else{
-        //         this.$message({
-        //             message: '警告哦，这是一条警告消息',
-        //             type: 'warning'
-        //             })
-        //     }
-        // }
     }
 }
 </script>

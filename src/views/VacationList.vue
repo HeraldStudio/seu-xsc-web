@@ -3,7 +3,7 @@
   <background title="节假日管理">
     <div class="topBar">
       <el-row>
-        <el-col :span="24" offset="0">
+        <el-col :span="24" >
           <el-form label-width="5em">
             <el-form-item label="节日名称" prop="name">
               <el-input v-model="inputData.name" size="medium" placeholder="需要添加的节假日名"></el-input>
@@ -35,7 +35,7 @@
     </div>
     <el-table
       :data="tableData"
-      stripe="true"
+      stripe
       style="width: 100%"
       @selection-change="selectChange"
       :default-sort="{prop: 'start', order: 'ascending'}"

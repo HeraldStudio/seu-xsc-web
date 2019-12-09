@@ -48,7 +48,7 @@
           </p>
           <p>
             <span class="index">在南京吗</span>
-            <i v-if="activity.isNanjing" class="el-icon-check"></i>
+            <i v-if="activity.isNanjing" class="el-icon-success"></i>
             <i v-if="!activity.isNanjing" class="el-icon-error"></i>
           </p>
         </el-card>
@@ -182,7 +182,7 @@ export default {
           color: "#EEE8AA",
           emergencyContact: "181****9984",
           emergencyPeople: "我是紧急联系人",
-          isNanjing: true // 是否离开南京  √：el-icon-check   ×：el-icon-close
+          isNanjing: true // 是否离开南京  √：el-icon-success   ×：el-icon-error
         },
         {
           content: "旅游",
@@ -192,7 +192,7 @@ export default {
           color: "#EEE8AA",
           emergencyContact: "181****9984",
           emergencyPeople: "我是紧急联系人",
-          isNanjing: true
+          isNanjing: false
         }
       ],
       endTime: {
@@ -227,7 +227,7 @@ export default {
           color: "#EEE8AA",
           emergencyContact: this.newEmergencyContact,
           emergencyPeople: this.newEmergencyPeople,
-          isNanjing: this.newIsNanjing // 是否离开南京  √：el-icon-check   ×：el-icon-close
+          isNanjing: this.newIsNanjing // 是否离开南京  √：el-icon-success   ×：el-icon-error
         });
         this.activities.sort((a, b) => {
           if (a.timestamp < b.timestamp) {
@@ -283,16 +283,16 @@ export default {
   font-size: 14px;
   font-family: 微软雅黑;
 }
-.el-icon-check {
-  background-color: #67c23a;
-  color: white;
+.el-icon-success {
+  background-color: white;
+  color: #67c23a;
   font-size: 26px;
   border-radius: 15px;
   margin-left: 30px;
 }
-.el-icon-close {
-  background-color: #f56c6c;
-  color: white;
+.el-icon-error {
+  background-color: white;
+  color: #f56c6c;
   font-size: 26px;
   border-radius: 15px;
   margin-left: 30px;

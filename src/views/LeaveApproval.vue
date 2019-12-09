@@ -12,7 +12,7 @@
         </div>
         <div class="row">
           <div class="key">一卡通号</div>
-          <div class="value">{{detail.cardnum}}</div>
+          <div class="value">{{detail.cardNum}}</div>
         </div>
         <div class="row">
           <div class="key">类型</div>
@@ -24,7 +24,7 @@
         </div>
         <div class="row">
           <div class="key">回校时间</div>
-          <div class="value">{{detail.start}}</div>
+          <div class="value">{{detail.end}}</div>
         </div>
         <div class="row">
           <div class="key">请假缘由</div>
@@ -38,8 +38,9 @@
           <div class="key">联系电话</div>
           <div class="value">{{detail.phoneNum}}</div>
         </div>
-        <div class="detail-button">
+        <div class="detail-button" >
           <el-button type="warning" @click="reject()">驳回</el-button>
+          <el-button type="infor" @click="letWaiting()" v-if="detail.state=='未处理'">待定</el-button>
           <el-button type="primary" @click="approval()">同意</el-button>
         </div>
       </div>
@@ -49,29 +50,51 @@
       <div class="search-container">
         <el-input v-model="searchText" placeholder="一卡通号/学号/姓名"></el-input>
       </div>
-      <el-radio-group v-model="type" >
-        <el-radio label>所有</el-radio>
+      <!-- <el-radio-group v-model="type">
+        <el-radio label="">所有</el-radio>
         <el-radio label="事假">事假</el-radio>
         <el-radio label="病假">病假</el-radio>
-      </el-radio-group>
+      </el-radio-group> -->
     </div>
     <div>
       <p class="content-title"></p>
       <el-table
         :data="tableData.filter(data => {
-          let tmp= data.name.toLowerCase().includes(searchText.toLowerCase())
-          tmp = tmp&&data.schoolNum.toLowerCase().includes(searchText.toLowerCase())
-          tmp = tmp&&data.cardnum.toLowerCase().includes(searchText.toLowerCase())
-          tmp = tmp&&((data.type==type)||!type)
+          let tmp= data.name.toLowerCase().includes(searchText)
+          tmp = tmp||data.schoolNum.toLowerCase().includes(searchText.toLowerCase())
+          tmp = tmp||data.cardNum.toLowerCase().includes(searchText.toLowerCase())
+          //tmp = tmp||((data.type==type)||!type)
           return tmp
           })"
         stripe
         style="width: 100%"
         @row-click="showDetail"
       >
-        <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="type" label="类型"></el-table-column>
-        <el-table-column prop="start" label="时间"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="65"></el-table-column>
+        <el-table-column
+          prop="type"
+          label="类型"
+          width="70"
+          :filters="[{ text: '事假', value: '事假' }, { text: '病假', value: '病假' }]"
+          :filter-method="filterType"
+          filter-placement="bottom-end"
+        ></el-table-column>
+        <el-table-column prop="start" label="请假日期"></el-table-column>
+        <el-table-column
+          prop="state"
+          label="状态"
+          :filters="[{ text: '未处理', value: '未处理' }, { text: '待定', value: '待定' }]"
+          :filter-method="filterState"
+          filter-placement="bottom-end"
+          width="70"
+        >
+          <template slot-scope="scope">
+            <el-tag
+              :type="scope.row.state === '未处理' ? 'warning' : 'primary'"
+              disable-transitions
+            >{{scope.row.state}}</el-tag>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </background>
@@ -84,8 +107,9 @@ import {
   Dialog,
   Table,
   TableColumn,
-  Radio,
-  RadioGroup
+  // Radio,
+  // RadioGroup,
+  Tag
 } from "element-ui";
 
 export default {
@@ -95,49 +119,49 @@ export default {
     "el-dialog": Dialog,
     "el-table": Table,
     "el-table-column": TableColumn,
-    "el-radio": Radio,
-    "el-radio-group": RadioGroup
+    // "el-radio": Radio,
+    // "el-radio-group": RadioGroup,
+    "el-tag": Tag
   },
   data() {
     return {
       searchText: "",
       dialogVisible: false,
       type: "",
-      detail: {
-        name: "赵拯基",
-        schoolNum: "06A171xx",
-        cardnum: "213171xxx",
-        phoneNum: "132231110xx",
-        state:"waiting",
-      },
+      detail: {},
       tableData: [
         {
           name: "赵拯基",
           schoolNum: "06A171xx",
-          cardnum: "213171xxx",
+          cardNum: "213171xxx",
+          start:"2019/10/1",
+          end:'2019/10/7',
           type: "事假",
-          state:"waiting",
+          state: "未处理",
+          text:"asudfhasduofasdfhoasdhgoasdfhoasdhsavnlasdfhdgouaodghoasdfsadflksalvnasldnglhiasdfhioasdghoiaso"
         },
         {
           name: "高睿昊",
           schoolNum: "090161xx",
-          cardnum: "213162xxx",
+          cardNum: "213162xxx",
+          start:"2019/10/1",
+          end:'2019/10/7',
           type: "事假",
-          state:"waiting"
+          state: "未处理"
         },
         {
           name: "任栗晗",
           schoolNum: "71118xxx",
-          cardnum: "21318xxxx",
+          cardNum: "21318xxxx",
           type: "病假",
-          state:"waiting"
+          state: "未处理"
         },
         {
           name: "黄开鸿",
           schoolNum: "09018xxx",
-          cardnum: "21318xxxx",
+          cardNum: "21318xxxx",
           type: "病假",
-          state:"waiting"
+          state: "未处理"
         }
       ]
     };
@@ -147,15 +171,26 @@ export default {
       this.detail = row;
       this.dialogVisible = true;
     },
-    approval(){
-      this.tableData.splice(this.tableData.indexOf(this.detail),1)
+    approval() {
+      this.tableData.splice(this.tableData.indexOf(this.detail), 1);
       //toDo: 同意申请API
-      this.dialogVisible=false
+      this.dialogVisible = false;
     },
-    reject(){
-      this.tableData.splice(this.tableData.indexOf(this.detail),1)
+    reject() {
+      this.tableData.splice(this.tableData.indexOf(this.detail), 1);
       //toDo: 拒绝申请API
-      this.dialogVisible =false
+      this.dialogVisible = false;
+    },
+    letWaiting() {
+      this.tableData[this.tableData.indexOf(this.detail)].state = "待定";
+      //toDo: 待定API
+      this.dialogVisible = false;
+    },
+    filterState(value, row) {
+      return row.state == value;
+    },
+    filterType(value, row){
+      return row.type==value
     }
   }
 };
@@ -180,6 +215,7 @@ export default {
       font-weight: bold;
     }
     .value {
+      width:90%;
       font-size: 16px;
       margin-left: 10px;
     }

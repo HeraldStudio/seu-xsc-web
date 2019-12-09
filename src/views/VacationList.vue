@@ -196,7 +196,7 @@ export default {
       this.multipleSelection = data;
     }
   },
-  mounted: ()=>{
+  mounted: function(){
       this.reloadList()
     }
   

@@ -5,3 +5,4 @@ Vue.use(Button)
 Vue.use(Input)
 Vue.prototype.$message = Message;
 Vue.prototype.$confirm = MessageBox.confirm
+Vue.$sreenWidth = document.body.clientWidth

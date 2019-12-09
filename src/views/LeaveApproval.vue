@@ -1,51 +1,60 @@
 <template>
   <background title="请假审批">
-    <el-dialog title="请假申请详情" :visible.sync="dialogVisible" width="90%">
-      <div class="detail-table">
-        <div class="row">
-          <div class="key">姓名</div>
-          <div class="value">{{detail.name}}</div>
-        </div>
-        <div class="row">
-          <div class="key">学号</div>
-          <div class="value">{{detail.schoolNum}}</div>
-        </div>
-        <div class="row">
-          <div class="key">一卡通号</div>
-          <div class="value">{{detail.cardNum}}</div>
-        </div>
-        <div class="row">
-          <div class="key">类型</div>
-          <div class="value">{{detail.type}}</div>
-        </div>
-        <div class="row">
-          <div class="key">离校时间</div>
-          <div class="value">{{detail.start}}</div>
-        </div>
-        <div class="row">
-          <div class="key">回校时间</div>
-          <div class="value">{{detail.end}}</div>
-        </div>
-        <div class="row">
-          <div class="key">请假缘由</div>
-          <div class="value">{{detail.text}}</div>
-        </div>
-        <div class="row">
-          <div class="key">证明材料</div>
-          <div class="value">{{detail.evidence}}</div>
-        </div>
-        <div class="row">
-          <div class="key">联系电话</div>
-          <div class="value">{{detail.phoneNum}}</div>
-        </div>
-        <div class="detail-button" >
+    <el-dialog  :visible.sync="dialogVisible" width="90%">
+      <div slot="title">{{detail.type}}申请详情</div>
+      <el-row>
+        <el-col :span="screenWidth<=760?24:13">
+          <div class="detail-table">
+            <div class="row">
+              <div class="key">姓名</div>
+              <div class="value">{{detail.name}}</div>
+            </div>
+            <div class="row">
+              <div class="key">学号</div>
+              <div class="value">{{detail.schoolNum}}</div>
+            </div>
+            <div class="row">
+              <div class="key">一卡通号</div>
+              <div class="value">{{detail.cardNum}}</div>
+            </div>
+            <el-card class="card">
+              <div class="card-header" slot="header">{{detail.type}}申请</div>
+              <div class="row">
+                <div class="key">离校时间</div>
+                <div class="value">{{detail.start}}</div>
+              </div>
+              <div class="row">
+                <div class="key">回校时间</div>
+                <div class="value">{{detail.end}}</div>
+              </div>
+              <div class="row">
+                <div class="key">请假缘由</div>
+                <div class="value">{{detail.text}}</div>
+              </div>
+            </el-card>
+            <el-card class="card" v-if="screenWidth<=760">
+              <div class="card-header" slot="header">证明材料</div>
+            </el-card>
+          </div>
+        </el-col>
+        <el-col :span="10" :offset="1" v-if="screenWidth>760">
+          <el-card>
+            <div class="card-header" slot="header">证明材料</div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row>  
+        <el-col :span="24" style="text-align: center; margin-top:1em">
+      <div >
           <el-button type="warning" @click="reject()">驳回</el-button>
           <el-button type="infor" @click="letWaiting()" v-if="detail.state=='未处理'">待定</el-button>
           <el-button type="primary" @click="approval()">同意</el-button>
-        </div>
       </div>
+      </el-col>
+      </el-row>
     </el-dialog>
-    <div>快捷
+    <div>
+      快捷
       <p class="content-title">搜索</p>
       <div class="search-container">
         <el-input v-model="searchText" placeholder="一卡通号/学号/姓名"></el-input>
@@ -54,7 +63,7 @@
         <el-radio label="">所有</el-radio>
         <el-radio label="事假">事假</el-radio>
         <el-radio label="病假">病假</el-radio>
-      </el-radio-group> -->
+      </el-radio-group>-->
     </div>
     <div>
       <p class="content-title"></p>
@@ -109,7 +118,10 @@ import {
   TableColumn,
   // Radio,
   // RadioGroup,
-  Tag
+  Tag,
+  Card,
+  Col,
+  Row
 } from "element-ui";
 
 export default {
@@ -121,31 +133,36 @@ export default {
     "el-table-column": TableColumn,
     // "el-radio": Radio,
     // "el-radio-group": RadioGroup,
-    "el-tag": Tag
+    "el-tag": Tag,
+    "el-card": Card,
+    "el-col": Col,
+    "el-row": Row
   },
   data() {
     return {
       searchText: "",
       dialogVisible: false,
       type: "",
+      screenWidth: document.body.clientWidth,
       detail: {},
       tableData: [
         {
           name: "赵拯基",
           schoolNum: "06A171xx",
           cardNum: "213171xxx",
-          start:"2019/10/1",
-          end:'2019/10/7',
+          start: "2019/10/1",
+          end: "2019/10/7",
           type: "事假",
           state: "未处理",
-          text:"asudfhasduofasdfhoasdhgoasdfhoasdhsavnlasdfhdgouaodghoasdfsadflksalvnasldnglhiasdfhioasdghoiaso"
+          text:
+            "asudfhasduofasdfhoasdhgoasdfhoasdhsavnlasdfhdgouaodghoasdfsadflksalvnasldnglhiasdfhioasdghoiaso"
         },
         {
           name: "高睿昊",
           schoolNum: "090161xx",
           cardNum: "213162xxx",
-          start:"2019/10/1",
-          end:'2019/10/7',
+          start: "2019/10/1",
+          end: "2019/10/7",
           type: "事假",
           state: "未处理"
         },
@@ -189,8 +206,8 @@ export default {
     filterState(value, row) {
       return row.state == value;
     },
-    filterType(value, row){
-      return row.type==value
+    filterType(value, row) {
+      return row.type == value;
     }
   }
 };
@@ -203,25 +220,29 @@ export default {
 .detail-table {
   border-top: 1px solid #eee;
   padding-top: 10px;
+  .card {
+    margin-top: 1em;
+    .card-header {
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
   .row {
     display: flex;
     margin-bottom: 10px;
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
     .key {
-      width: 5em;
+      width: 6em;
       text-align: right;
       font-size: 16px;
       font-weight: bold;
     }
     .value {
-      width:90%;
+      width: 90%;
       font-size: 16px;
       margin-left: 10px;
     }
-  }
-  .detail-button {
-    text-align: center;
   }
 }
 </style>

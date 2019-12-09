@@ -38,7 +38,7 @@
               </p>
               <p>
                 <span class="index">在南京吗</span>
-                <i v-if="activity.isNanjing" class="el-icon-check" style="margin-left:30px"></i>
+                <i v-if="activity.isNanjing" class="el-icon-success" style="margin-left:30px"></i>
                 <i v-if="!activity.isNanjing" class="el-icon-error" style="margin-left:30px"></i>
               </p>
             </el-card>
@@ -68,7 +68,7 @@
             <div class="row">
               <div class="key">在学校吗</div>
               <div class="value">
-                <i v-if="detail.location === '在校'" class="el-icon-check"></i>
+                <i v-if="detail.location === '在校'" class="el-icon-success"></i>
                 <i v-if="!detail.location === '在校'" class="el-icon-error"></i>
               </div>
             </div>
@@ -84,6 +84,7 @@
                     style="float: right; padding: 3px 0 ; color:#0C84E4"
                     type="text"
                     @click="detailTrip = true"
+                    v-if="!(isNoTrip())"
                   >详细行程</el-button>
                 </div>
                 <p>
@@ -110,21 +111,24 @@
                 </p>
                 <p>
                   <span class="index">在南京吗</span>
-                  <i v-if="activity.isNanjing" class="el-icon-check"></i>
+                  <i v-if="activity.isNanjing" class="el-icon-success"></i>
                   <i v-if="!activity.isNanjing" class="el-icon-error"></i>
                 </p>
               </el-card>
             </template>
             <div v-if="isNoTrip()">
-              <span>
+              <!-- <span>
                 暂无当前行程
-                </span>
-                            <el-button
-                    style="float: right; padding: 3px 0 ; color:#0C84E4"
-                    type="text"
-                    @click="detailTrip = true"
-                  >详细行程</el-button>
-              </div>
+              </span>-->
+              <template>
+                <img :src="imgUrl" />
+              </template>
+              <el-button
+                style="float: right; padding: 3px 0 ; color:#0C84E4"
+                type="text"
+                @click="detailTrip = true"
+              >近期行程</el-button>
+            </div>
           </el-main>
           <el-divider></el-divider>
           <el-footer>这里放请假详情</el-footer>
@@ -152,7 +156,7 @@
           <div class="row">
             <div class="key">在学校吗</div>
             <div class="value">
-              <i v-if="detail.location === '在校'" class="el-icon-check"></i>
+              <i v-if="detail.location === '在校'" class="el-icon-success"></i>
               <i v-if="!(detail.location === '在校')" class="el-icon-error"></i>
             </div>
           </div>
@@ -193,7 +197,7 @@
               </p>
               <p>
                 <span class="index">在南京吗</span>
-                <i v-if="activity.isNanjing" class="el-icon-check"></i>
+                <i v-if="activity.isNanjing" class="el-icon-success" ></i>
                 <i v-if="!activity.isNanjing" class="el-icon-error"></i>
               </p>
             </el-card>
@@ -213,7 +217,7 @@
       <el-table :data="list" stripe style="width: 100%" @row-click="showDetail">
         <el-table-column prop="name" label="姓名" min-width="62px"></el-table-column>
         <el-table-column prop="cardnum" label="一卡通号" min-width="88px"></el-table-column>
-        <el-table-column prop="schoolNum" label="学号" min-width="82px"></el-table-column>
+        <el-table-column prop="schoolNum" label="学号" min-width="84px"></el-table-column>
         <el-table-column
           prop="location"
           label="在校情况"
@@ -272,6 +276,7 @@ export default {
   },
   data() {
     return {
+      imgUrl: require("../static/noTrip.png"),
       screenWidth: document.body.clientWidth,
       searchKey: "",
       dialogVisible: false,
@@ -290,7 +295,7 @@ export default {
         backTimestamp: "2019-12-28 20:00", // 返校时间
         emergencyContact: "18866666666",
         emergencyPeople: "妈妈",
-        isNanjing: false, // 是否离开南京  √：el-icon-check   ×：el-icon-close
+        isNanjing: false, // 是否离开南京  √：el-icon-check   ×：el-icon-error
         activities: [
           {
             content: "回家", // 行程事由
@@ -300,7 +305,7 @@ export default {
             color: "#EEE8AA",
             emergencyContact: "181****9984",
             emergencyPeople: "我是紧急联系人",
-            isNanjing: true // 是否离开南京  √：el-icon-check   ×：el-icon-close
+            isNanjing: true // 是否离开南京  √：el-icon-check   ×：el-icon-error
           },
           {
             content: "旅游",
@@ -310,7 +315,7 @@ export default {
             color: "#EEE8AA",
             emergencyContact: "181****9984",
             emergencyPeople: "我是紧急联系人",
-            isNanjing: true
+            isNanjing: false
           }
         ]
       },
@@ -362,11 +367,14 @@ export default {
     isNoTrip() {
       let now = new Date().format("yyyy-MM-dd hh:mm");
       for (let e in this.detail.activities) {
-        if (now <= this.detail.activities[e].backTimestamp && now >= this.detail.activities[e].timestamp) {
-          return false
+        if (
+          now <= this.detail.activities[e].backTimestamp &&
+          now >= this.detail.activities[e].timestamp
+        ) {
+          return false;
         }
       }
-      return true
+      return true;
     }
   },
   mounted() {
@@ -382,6 +390,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.index {
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 微软雅黑;
+  margin: 16px 0;
+}
+.content {
+  margin-left: 30px;
+  font-size: 14px;
+  font-family: 微软雅黑;
+}
 .search-container {
   display: flex;
 }
@@ -404,22 +423,36 @@ export default {
         .value {
           font-size: 16px;
           margin-left: 10px;
+          .el-icon-success {
+            background-color: white;
+            color: #67c23a;
+            font-size: 26px;
+            border-radius: 15px;
+            margin-left: 0px;
+          }
+          .el-icon-error {
+            background-color: white;
+            color: #f56c6c;
+            font-size: 26px;
+            border-radius: 15px;
+            margin-left: 0px;
+          }
         }
       }
     }
   }
   .el-container {
-    .el-icon-check {
-      background-color: #67c23a;
-      color: white;
-      font-size: 20px;
+    .el-icon-success {
+      background-color: white;
+      color: #67c23a;
+      font-size: 26px;
       border-radius: 15px;
       margin-left: 30px;
     }
-    .el-icon-close {
-      background-color: #f56c6c;
-      color: white;
-      font-size: 20px;
+    .el-icon-error {
+      background-color: white;
+      color: #f56c6c;
+      font-size: 26px;
       border-radius: 15px;
       margin-left: 30px;
     }
@@ -443,33 +476,63 @@ export default {
       .value {
         font-size: 16px;
         margin-left: 10px;
+        .el-icon-success {
+          background-color: white;
+          color: #67c23a;
+          font-size: 26px;
+          border-radius: 15px;
+          margin-left: 0px;
+        }
+        .el-icon-error {
+          background-color: white;
+          color: #f56c6c;
+          font-size: 26px;
+          border-radius: 15px;
+          margin-left: 0px;
+        }
+      }
+    }
+    .el-timeline {
+      .el-timeline-item {
+        .el-card {
+          .index {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 微软雅黑;
+            margin: 10px 0;
+          }
+          .content {
+            margin-left: 10px;
+            font-size: 14px;
+            font-family: 微软雅黑;
+          }
+        }
+      }
+    }
+  }
+  .el-timeline{
+    .el-timeline-item{
+      .el-card{
+        .content{
+          margin-left: 10px;
+        }
       }
     }
   }
 }
-.el-icon-check {
-  background-color: #67c23a;
-  color: white;
-  font-size: 20px;
+.el-icon-success {
+  background-color: white;
+  color: #67c23a;
+  font-size: 26px;
   border-radius: 15px;
-  margin-left: 0px;
+  margin-left: 10px;
 }
-.el-icon-close {
-  background-color: #f56c6c;
-  color: white;
-  font-size: 20px;
+.el-icon-error {
+  background-color: white;
+  color: #f56c6c;
+  font-size: 26px;
   border-radius: 15px;
-  margin-left: 0px;
+  margin-left: 10px;
 }
-.index {
-  font-size: 16px;
-  font-weight: bold;
-  font-family: 微软雅黑;
-  margin: 16px 0;
-}
-.content {
-  margin-left: 30px;
-  font-size: 14px;
-  font-family: 微软雅黑;
-}
+
 </style>

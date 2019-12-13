@@ -1,5 +1,5 @@
 <template>
-  <background title="学生基本信息速查">
+  <background title="学生课表查询">
     <el-dialog title="学生基本信息" :visible.sync="dialogVisible" width="90%">
       <div class="detail-table">
         <div class="row">
@@ -29,6 +29,14 @@
       </div>
     </el-dialog>
     <div>
+      <el-radio-group v-model="radio1">
+        <el-radio-button label="上海"></el-radio-button>
+        <el-radio-button label="北京"></el-radio-button>
+        <el-radio-button label="广州"></el-radio-button>
+        <el-radio-button label="深圳"></el-radio-button>
+      </el-radio-group>
+    </div>
+    <div>
       <p class="content-title">快捷搜索</p>
       <div class="search-container">
         <el-input v-model="searchKey" placeholder="一卡通号/学号/姓名"></el-input>
@@ -48,7 +56,7 @@
 
 <script>
 import Background from "../components/Background.vue";
-import { Input, Dialog, Table, TableColumn } from "element-ui";
+import { Input, Dialog, Table, TableColumn, RadioButton, RadioGroup } from "element-ui";
 
 export default {
   components: {
@@ -56,13 +64,16 @@ export default {
     "el-input": Input,
     "el-dialog": Dialog,
     "el-table": Table,
-    "el-table-column": TableColumn
+    "el-table-column": TableColumn,
+    "el-radio-button":RadioButton,
+    "el-radio-group":RadioGroup
   },
   data() {
     return {
-      searchFilters: "all",
+      mode: "BY_STUDENT",
       searchKey: "",
       dialogVisible: false,
+
       detail: {
         name: "赵拯基",
         schoolNum: "06A171xx",

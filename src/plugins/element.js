@@ -1,5 +1,8 @@
 import Vue from 'vue'
-import { Button, Input } from 'element-ui'
+import { Button, Input, Message,MessageBox } from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Input)
+Vue.prototype.$message = Message;
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.$sreenWidth = document.body.clientWidth

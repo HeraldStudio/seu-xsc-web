@@ -6881,6 +6881,13 @@ uuid@^3.0.1, uuid@^3.3.2:
   version "3.3.3"
   resolved "https://registry.npm.taobao.org/uuid/download/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
 
+v-distpicker@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/v-distpicker/download/v-distpicker-1.2.2.tgz#9db5ba3aa9aba48507ae4b2994293365c5a9a27d"
+  integrity sha1-nbW6OqmrpIUHrksplCkzZcWpon0=
+  dependencies:
+    vue "^2.6.10"
+
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
   resolved "https://registry.npm.taobao.org/validate-npm-package-license/download/validate-npm-package-license-3.0.4.tgz#fc91f6b9c7ba15c857f4cb2c5defeec39d4f410a"

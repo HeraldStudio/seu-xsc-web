@@ -5,7 +5,7 @@
             <menu-item :icon="curriculumIcon" title="学生课表查询" role="辅导员/学生处"></menu-item>
             <menu-item :icon="gradeIcon" title="学生成绩查询" route="/student-grade" role="辅导员/学生处"></menu-item>
             <menu-item :icon="outingIcon" title="节假日行程登记" route="/holiday-trip-register" role="学生"></menu-item>
-            <menu-item :icon="takeLeaveIcon" title="请假登记" role="学生"></menu-item>
+            <menu-item :icon="takeLeaveIcon" title="请假登记" role="学生" route="/leave-register"></menu-item>
             <menu-item :icon="takeLeaveIcon" title="请假审批" role="辅导员" route="/leave-approval"></menu-item>
             <menu-item :icon="outingIcon" title="离/在校情况查询" route="/locate-student" role="辅导员/学生处"></menu-item>
             <menu-item :icon="locateIcon" title="应急在校跟踪" role="学生处"></menu-item>

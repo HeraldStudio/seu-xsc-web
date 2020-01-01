@@ -67,6 +67,11 @@ const routes = [
     path:'/leave-approval',
     name:'leave-approval',
     component: () => import(/* webpackChunkName: "about"*/'../views/LeaveApproval.vue')
+  },
+  {
+    path: '/leave-register',
+    name: 'leave-register',
+    component: () => import(/* webpackChunkName: "about"*/'../views/LeaveRegister.vue')
   }
 ]
 

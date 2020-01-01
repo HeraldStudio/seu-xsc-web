@@ -3,7 +3,7 @@
     <el-dialog  :visible.sync="dialogVisible" width="90%">
       <div slot="title">{{detail.type}}申请详情</div>
       <el-row>
-        <el-col :span="screenWidth<=760?24:13">
+        <el-col :span="this.screenWidth<=760?24:13">
           <div class="detail-table">
             <div class="row">
               <div class="key">姓名</div>
@@ -32,12 +32,12 @@
                 <div class="value">{{detail.text}}</div>
               </div>
             </el-card>
-            <el-card class="card" v-if="screenWidth<=760">
+            <el-card class="card" v-if="this.screenWidth<=760">
               <div class="card-header" slot="header">证明材料</div>
             </el-card>
           </div>
         </el-col>
-        <el-col :span="10" :offset="1" v-if="screenWidth>760">
+        <el-col :span="10" :offset="1" v-if="this.screenWidth>760">
           <el-card>
             <div class="card-header" slot="header">证明材料</div>
           </el-card>
@@ -55,7 +55,7 @@
     <el-dialog  :visible.sync="modifyDialogVisible" width="90%">
       <div slot="title">{{detail.type}}申请详情</div>
       <el-row>
-        <el-col :span="screenWidth<=760?24:13">
+        <el-col :span="this.screenWidth<=760?24:13">
           <div class="detail-table">
             <div class="row">
               <div class="key-input">姓名</div>
@@ -94,7 +94,7 @@
                 <el-input class="value" v-model="newReason"></el-input>
               </div>
             </el-card>
-            <el-card class="card" v-if="screenWidth<=760">
+            <el-card class="card" v-if="this.screenWidth<=760">
               <div class="card-header" slot="header">证明材料</div>
               <el-upload
                 class="upload-demo"
@@ -108,7 +108,7 @@
             </el-card>
           </div>
         </el-col>
-        <el-col :span="10" :offset="1" v-if="screenWidth>760">
+        <el-col :span="10" :offset="1" v-if="this.screenWidth>760">
           <el-card>
             <div class="card-header" slot="header">证明材料</div>
             <el-upload
@@ -173,7 +173,7 @@
             label="消息状态"
             :fliters="[{ text: 'true', value: '已读'}, { text: 'false', value: '未读' }]"
             :fliter-method="fliterRead"
-            width="100">
+            width="80">
         </el-table-column>
         <el-table-column
           prop="type"
@@ -183,7 +183,7 @@
           :filter-method="filterType"
           filter-placement="bottom-end"
         ></el-table-column>
-        <el-table-column prop="start" label="请假日期" :sortable="true"></el-table-column>
+        <el-table-column prop="start" label="日期" :sortable="true"></el-table-column>
         <el-table-column
           prop="state"
           label="状态"
@@ -247,6 +247,7 @@ export default {
   },
   data() {
     return {
+      screenWidth: document.body.clientWidth,
       newType: "",
       newName: '',
       newSchoolNum: '',
@@ -258,7 +259,6 @@ export default {
       modifyDialogVisible: false,
       dialogVisible: false,
       type: "",
-      screenWidth: document.body.clientWidth,
       detail: {},
       tableData: [
         {
@@ -311,6 +311,15 @@ export default {
         }
       ]
     };
+  },
+  mounted() {
+    const that = this;
+    window.onresize = () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth;
+        that.screenWidth = window.screenWidth;
+      })();
+    }
   },
   methods: {
     handlePreview(file) {

@@ -54,10 +54,9 @@
       </el-row>
     </el-dialog>
     <div>
-      快捷
-      <p class="content-title">搜索</p>
       <div class="search-container">
-        <el-input v-model="searchText" placeholder="一卡通号/学号/姓名"></el-input>
+        <el-input v-model="searchKey" placeholder="一卡通号/学号/姓名"></el-input>
+        <el-button style="margin-left:10px;" type="primary" @click="search">搜索</el-button>
       </div>
       <!-- <el-radio-group v-model="type">
         <el-radio label="">所有</el-radio>
@@ -140,7 +139,7 @@ export default {
   },
   data() {
     return {
-      searchText: "",
+      searchKey: "",
       dialogVisible: false,
       type: "",
       screenWidth: document.body.clientWidth,

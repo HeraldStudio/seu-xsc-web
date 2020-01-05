@@ -67,7 +67,7 @@
     <el-dialog
       :visible.sync="CreateTrip"
       v-if="this.screenWidth>=760"
-      width="30%"
+      width="40%"
       :before-close="handleClose"
     >
       <span slot="title">
@@ -95,8 +95,8 @@
         ></el-date-picker>
       </div>
       <div class="dialogRow">
-        <span class="index">详细去向：</span>
-        <!-- <v-distpicker></v-distpicker> -->
+        <!-- <span class="index">详细去向：</span> -->
+        <p class="index">详细去向：</p>
         <el-input placeholder="请输入 省-市-区（如江苏省-南京市-栖霞区）" v-model="newTarget"></el-input>
       </div>
       <div class="dialogRow">
@@ -173,8 +173,8 @@
         ></el-date-picker>
       </div>
       <div class="dialogRow">
-        <span class="index">详细去向：</span>
-        <!-- <v-distpicker></v-distpicker> -->
+        <!-- <span class="index">详细去向：</span> -->
+        <p class="index">详细去向：</p>
         <el-input placeholder="请输入 省-市-区（如江苏省-南京市-栖霞区）" v-model="newTarget"></el-input>
       </div>
       <div class="dialogRow">

@@ -1,8 +1,8 @@
 <template>
   <background title="学生成绩查询">
     <el-menu :default-active="type" class="el-menu-demo" mode="horizontal" @select="changeType">
-      <el-menu-item index="student">学生</el-menu-item>
-      <el-menu-item index="subject">科目</el-menu-item>
+      <el-menu-item index="student">按学生查询</el-menu-item>
+      <el-menu-item index="subject">按科目查询</el-menu-item>
     </el-menu>
     <!--
     <div class="radio-pannel">
@@ -33,9 +33,10 @@
     <div>
       <el-dialog title="成绩列表" :visible.sync="detailForStudent" width="360px">
         <el-table :data="detailForStudentList" style="width: 100%" :row-class-name="selectStyle">
-          <el-table-column prop="title" label="科目名称"></el-table-column>
+          <el-table-column prop="title" label="科目"></el-table-column>
           <el-table-column prop="credit" label="学分"></el-table-column>
           <el-table-column prop="grade" label="成绩"></el-table-column>
+          <el-table-column prop="type" label="成绩性质"></el-table-column>
         </el-table>
       </el-dialog>
     </div>
@@ -134,17 +135,20 @@ export default {
         {
           title: "高等数学",
           credit: 4.5,
-          grade: 97
+          grade: 97,
+          type: '首修'
         },
         {
           title: "大学英语",
           credit: 1.5,
-          grade: 80
+          grade: 80,
+          type: '首修'
         },
         {
           title: "固体物理",
           credit: 2,
-          grade: 59
+          grade: 59,
+          type: '首修'
         },
 
       ],

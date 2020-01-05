@@ -1,151 +1,66 @@
 <template>
   <background title="请假登记">
-    <el-dialog  :visible.sync="dialogVisible" width="90%">
+    <el-dialog :visible.sync="modifyDialogVisible" width="90%">
       <div slot="title">{{detail.type}}申请详情</div>
-      <el-row>
-        <el-col :span="this.screenWidth<=760?24:13">
-          <div class="detail-table">
-            <div class="row">
-              <div class="key">姓名</div>
-              <div class="value">{{detail.name}}</div>
-            </div>
-            <div class="row">
-              <div class="key">学号</div>
-              <div class="value">{{detail.schoolNum}}</div>
-            </div>
-            <div class="row">
-              <div class="key">一卡通号</div>
-              <div class="value">{{detail.cardNum}}</div>
-            </div>
-            <el-card class="card">
-              <div class="card-header" slot="header">{{detail.type}}申请</div>
-              <div class="row">
-                <div class="key">离校时间</div>
-                <div class="value">{{detail.start}}</div>
-              </div>
-              <div class="row">
-                <div class="key">回校时间</div>
-                <div class="value">{{detail.end}}</div>
-              </div>
-              <div class="row">
-                <div class="key">请假缘由</div>
-                <div class="value">{{detail.text}}</div>
-              </div>
-            </el-card>
-            <el-card class="card" v-if="this.screenWidth<=760">
-              <div class="card-header" slot="header">证明材料</div>
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="10" :offset="1" v-if="this.screenWidth>760">
-          <el-card>
-            <div class="card-header" slot="header">证明材料</div>
-          </el-card>
-        </el-col>
-      </el-row>
-      <el-row>  
-        <el-col :span="24" style="text-align: center; margin-top:1em">
-      <div >
-          <el-button type="danger" @click="remove()" v-if="detail.state!='未处理'">删除</el-button>
-          <el-button type="infor" @click="ensure()" >确定</el-button>
-      </div>
-      </el-col>
-      </el-row>
-    </el-dialog>
-    <el-dialog  :visible.sync="modifyDialogVisible" width="90%">
-      <div slot="title">{{detail.type}}申请详情</div>
-      <el-row>
-        <el-col :span="this.screenWidth<=760?24:13">
-          <div class="detail-table">
-            <div class="row">
-              <div class="key-input">姓名</div>
-              <el-input class="value" v-model="newName"></el-input>
-            </div>
-            <div class="row">
-              <div class="key-input">学号</div>
-              <el-input class="value" v-model="newSchoolNum"></el-input>
-            </div>
-            <div class="row">
-              <div class="key-input">一卡通号</div>
-              <el-input class="value" v-model="newCardNum"></el-input>
-            </div>
-            <div class="row">
-              <div class="app-Radio">
-                <el-radio v-model="newType" label="病假">病假</el-radio>
-                <el-radio v-model="newType" label="事假">事假</el-radio>
-              </div>
-            </div>
-            <el-card class="card">
-              <div class="card-header" slot="header">{{detail.type}}申请</div>
-              <div class="row">
-                <el-date-picker
-                  v-model="newTimestamp"
-                  type="datetimerange"
-                  start-placeholder="离校日期"
-                  end-placeholder="返校日期"
-                  :default-time="['20:00:00', '20:00:00']"
-                  format="yyyy-MM-dd hh:mm"
-                  value-format="yyyy-MM-dd hh:mm"
-                  style="width:100%"
-                ></el-date-picker>
-              </div>
-              <div class="row">
-                <div class="key-input">请假缘由</div>
-                <el-input class="value" v-model="newReason"></el-input>
-              </div>
-            </el-card>
-            <el-card class="card" v-if="this.screenWidth<=760">
-              <div class="card-header" slot="header">证明材料</div>
-              <el-upload
-                class="upload-demo"
-                :on-preview="handlePreview"
-                accept=".xls,.xlsx,.doc,.docx,.pdf,.jpg,.jpeg,.png"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                multiple>
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text"><em>点击上传</em></div>
-              </el-upload>
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="10" :offset="1" v-if="this.screenWidth>760">
-          <el-card>
-            <div class="card-header" slot="header">证明材料</div>
-            <el-upload
-              class="upload-demo"
-              :on-preview="handlePreview"
-              accept=".xls,.xlsx,.doc,.docx,.pdf,.jpg,.jpeg,.png"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              multiple>
-              <i class="el-icon-upload"></i>
-              <div class="el-upload__text"><em>点击上传</em></div>
-            </el-upload>
-          </el-card>
-        </el-col>
-      </el-row>
-      <el-row>  
-        <el-col :span="24" style="text-align: center; margin-top:1em">
-      <div >
-          <el-button type="danger" @click="submit()" >提交申请</el-button>
-      </div>
-      </el-col>
-      </el-row>
+      <el-form ref="form" :model="form" label-width="85px">
+        <el-form-item label="请假类型">
+          <el-radio v-model="form.type" label="病假">病假</el-radio>
+          <el-radio v-model="form.type" label="事假">事假</el-radio>
+        </el-form-item>
+        <el-form-item label="请假缘由">
+          <el-input v-model="form.reason"></el-input>
+        </el-form-item>
+        <el-form-item label="开始时间">
+          <el-date-picker
+            class="value"
+            v-model="form.startTime"
+            type="datetime"
+            placeholder="点击选择"
+            :default-time="['20:00:00', '20:00:00']"
+            format="yyyy-MM-dd hh:mm"
+            value-format="yyyy-MM-dd hh:mm"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="结束时间">
+          <el-date-picker
+            class="value"
+            v-model="form.endTime"
+            type="datetime"
+            placeholder="点击选择"
+            :default-time="['20:00:00', '20:00:00']"
+            format="yyyy-MM-dd hh:mm"
+            value-format="yyyy-MM-dd hh:mm"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="是否离校">
+          <el-radio v-model="form.leaveCampus" label="1">离校</el-radio>
+          <el-radio v-model="form.leaveCampus" label="0">校内</el-radio>
+        </el-form-item>
+        <el-form-item label="离开南京">
+          <el-radio v-model="form.leaveNanjing" label="1">是</el-radio>
+          <el-radio v-model="form.leaveNanjing" label="0">否</el-radio>
+        </el-form-item>
+        <el-form-item label="具体去向">
+          <el-input v-model="form.destination"></el-input>
+        </el-form-item>
+        <el-form-item label="紧急联系人">
+          <el-input v-model="form.emergencyContact"></el-input>
+        </el-form-item>
+      </el-form>
     </el-dialog>
     <el-tabs v-model="activeName">
-        <el-tab-pane label="已处理" name="first">
-        快捷
-        <p class="content-title">搜索</p>
-            <div class="search-container">
-                <el-input v-model="searchText" placeholder="请输入搜索内容"></el-input>
-            </div>
-        </el-tab-pane>
-        <el-tab-pane label="待处理" name="second">
-        快捷
-        <p class="content-title">搜索</p>
-            <div class="search-container">
-                <el-input v-model="searchText" placeholder="请输入搜索内容"></el-input>
-            </div>
-        </el-tab-pane>
+      <el-tab-pane label="待处理" name="first">
+        <div class="search-container">
+          <el-input v-model="searchKey" placeholder="一卡通号/学号/姓名"></el-input>
+          <el-button style="margin-left:10px;" type="primary" @click="search">搜索</el-button>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="已处理" name="second">
+        <div class="search-container">
+          <el-input v-model="searchKey" placeholder="一卡通号/学号/姓名"></el-input>
+          <el-button style="margin-left:10px;" type="primary" @click="search">搜索</el-button>
+        </div>
+      </el-tab-pane>
     </el-tabs>
     <div>
       <p class="content-title"></p>
@@ -159,22 +74,18 @@
           else if (activeName == 'second') tmp = (data.state == '未处理') && tmp
           return tmp
           })"
-        
-        
         style="width: 100%"
         @row-click="showDetail"
-
-        :default-sort = "{prop: 'read', order: 'descending'}"
+        :default-sort="{prop: 'read', order: 'descending'}"
         :row-class-name="tableRowClassName"
       >
-
-        <el-table-column 
-            prop="read" 
-            label="消息状态"
-            :fliters="[{ text: 'true', value: '已读'}, { text: 'false', value: '未读' }]"
-            :fliter-method="fliterRead"
-            width="80">
-        </el-table-column>
+        <el-table-column
+          prop="read"
+          label="消息状态"
+          :fliters="[{ text: 'true', value: '已读'}, { text: 'false', value: '未读' }]"
+          :fliter-method="fliterRead"
+          width="80"
+        ></el-table-column>
         <el-table-column
           prop="type"
           label="类型"
@@ -200,7 +111,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <p v-if="activeName == 'second'">
+      <p v-if="activeName == 'first'">
         <el-button class="add-new" type="primary" icon="el-icon-plus" @click="newRegister()" circle></el-button>
       </p>
     </div>
@@ -217,14 +128,12 @@ import {
   Radio,
   // RadioGroup,
   Tag,
-  Card,
-  Col,
-  Row,
   Tabs,
   TabPane,
   DatePicker,
-  Upload
- // alert
+  Form,
+  FormItem
+  // alert
 } from "element-ui";
 
 export default {
@@ -235,31 +144,39 @@ export default {
     "el-table": Table,
     "el-table-column": TableColumn,
     "el-tag": Tag,
-    "el-card": Card,
-    "el-col": Col,
-    "el-row": Row,
-    "el-tabs" : Tabs,
-    "el-tab-pane" : TabPane,
-    "el-date-picker" : DatePicker,
-    "el-radio" : Radio,
-    "el-upload" : Upload
-   // "el-alert": alert
+    "el-tabs": Tabs,
+    "el-tab-pane": TabPane,
+    "el-date-picker": DatePicker,
+    "el-radio": Radio,
+    "el-form": Form,
+    "el-form-item": FormItem
+    // "el-alert": alert
   },
   data() {
     return {
       screenWidth: document.body.clientWidth,
       newType: "",
-      newName: '',
-      newSchoolNum: '',
-      newCardNum: '',
+      newName: "",
+      newSchoolNum: "",
+      newCardNum: "",
       newTimestamp: "",
       newReason: "",
-      activeName: 'first',
+      activeName: "first",
       searchText: "",
       modifyDialogVisible: false,
       dialogVisible: false,
       type: "",
       detail: {},
+      form: {
+        type:'', // 请假类型：病假/事假
+        reason:'', // 请假缘由
+        startTime: '', // 开始时间
+        endTime: '', // 结束时间
+        leaveCampus: false, //
+        leaveNanjing: false, //
+        destination: '', //
+        emergencyContact: ''
+      },
       tableData: [
         {
           name: "刘幽远",
@@ -319,7 +236,7 @@ export default {
         window.screenWidth = document.body.clientWidth;
         that.screenWidth = window.screenWidth;
       })();
-    }
+    };
   },
   methods: {
     handlePreview(file) {
@@ -337,12 +254,12 @@ export default {
       }
       return false;
     },
-    tableRowClassName({row}) {
-      if (this.activeName === "second") return '';
+    tableRowClassName({ row }) {
+      if (this.activeName === "second") return "";
       if (row.read === "未读") {
-        return 'warning-row';
-      } 
-      return '';
+        return "warning-row";
+      }
+      return "";
     },
     newRegister() {
       this.modifyDialogVisible = true;
@@ -388,12 +305,12 @@ export default {
           end: this.newTimestamp[1],
           text: this.newReason
         });
-        this.newReason = '';
-        this.newName = '';
-        this.newSchoolNum = '';
-        this.newCardNum = '';
-        this.newTimestamp = '';
-        this.newType = '';
+        this.newReason = "";
+        this.newName = "";
+        this.newSchoolNum = "";
+        this.newCardNum = "";
+        this.newTimestamp = "";
+        this.newType = "";
       }
       this.modifyDialogVisible = false;
     },
@@ -409,8 +326,8 @@ export default {
     readOrNot(object1, object2) {
       let r1 = object1.read;
       let r2 = object2.read;
-      if(r1[0] != r2[0]) {
-        if(r1[0] == '未') return 1;
+      if (r1[0] != r2[0]) {
+        if (r1[0] == "未") return 1;
         else return -1;
       }
     }

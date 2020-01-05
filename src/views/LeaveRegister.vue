@@ -1,7 +1,7 @@
 <template>
   <background title="请假登记">
     <el-dialog :visible.sync="modifyDialogVisible" width="90%">
-      <div slot="title">{{detail.type}}申请详情</div>
+      <div slot="title">申请详情登记</div>
       <el-form ref="form" :model="form" label-width="85px">
         <el-form-item label="请假类型">
           <el-radio v-model="form.type" label="病假">病假</el-radio>

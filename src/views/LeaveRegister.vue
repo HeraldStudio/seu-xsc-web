@@ -103,12 +103,7 @@
           filter-placement="bottom-end"
           width="70"
         >
-          <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.state === '未处理' ? 'warning' : (scope.row.state === '同意' ? 'primary' : 'danger')"
-              disable-transitions
-            >{{scope.row.state}}</el-tag>
-          </template>
+          
         </el-table-column>
       </el-table>
       <p v-if="activeName == 'first'">
@@ -127,7 +122,7 @@ import {
   TableColumn,
   Radio,
   // RadioGroup,
-  Tag,
+  //Tag,
   Tabs,
   TabPane,
   DatePicker,
@@ -143,7 +138,7 @@ export default {
     "el-dialog": Dialog,
     "el-table": Table,
     "el-table-column": TableColumn,
-    "el-tag": Tag,
+    //"el-tag": Tag,
     "el-tabs": Tabs,
     "el-tab-pane": TabPane,
     "el-date-picker": DatePicker,

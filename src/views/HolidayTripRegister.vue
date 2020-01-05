@@ -64,7 +64,12 @@
         <p style="font-size:20px;font-family:微软雅黑">{{ endTime.content }}</p>
       </el-timeline-item>
     </el-timeline>
-    <el-dialog :visible.sync="CreateTrip" width="90%" :before-close="handleClose">
+    <el-dialog
+      :visible.sync="CreateTrip"
+      v-if="this.screenWidth>=760"
+      width="30%"
+      :before-close="handleClose"
+    >
       <span slot="title">
         <span class="title">新建行程</span>
         <el-divider></el-divider>
@@ -84,6 +89,84 @@
           start-placeholder="离校日期"
           end-placeholder="返校日期"
           :default-time="['20:00:00', '20:00:00']"
+          format="yyyy-MM-dd hh:mm"
+          value-format="yyyy-MM-dd hh:mm"
+          style="width:100%"
+        ></el-date-picker>
+      </div>
+      <div class="dialogRow">
+        <span class="index">详细去向：</span>
+        <!-- <v-distpicker></v-distpicker> -->
+        <el-input placeholder="请输入 省-市-区（如江苏省-南京市-栖霞区）" v-model="newTarget"></el-input>
+      </div>
+      <div class="dialogRow">
+        <p class="index">应急联系人：</p>
+        <el-input v-model="newEmergencyPeople"></el-input>
+      </div>
+      <div class="dialogRow">
+        <p class="index">应急联系方式：</p>
+        <el-input v-model="newEmergencyContact"></el-input>
+      </div>
+      <div class="dialogRow">
+        <span class="index">是否离开南京：</span>
+        <el-button
+          v-if="newIsNanjing"
+          type="success"
+          icon="el-icon-check"
+          circle
+          @click="newIsNanjing = false"
+          size="small"
+        ></el-button>
+        <el-button
+          v-if="!newIsNanjing"
+          type="danger"
+          icon="el-icon-close"
+          circle
+          @click="newIsNanjing = true"
+          size="small"
+        ></el-button>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="CreateTrip = false">取 消</el-button>
+        <el-button type="primary" @click="createTrip">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog
+      :visible.sync="CreateTrip"
+      v-if="this.screenWidth<760"
+      width="90%"
+      :before-close="handleClose"
+    >
+      <span slot="title">
+        <span class="title">新建行程</span>
+        <el-divider></el-divider>
+      </span>
+      <div>
+        <span class="index">行程事由：</span>
+        <el-radio-group v-model="newCause" size="medium">
+          <el-radio-button label="回家"></el-radio-button>
+          <el-radio-button label="旅行"></el-radio-button>
+        </el-radio-group>
+      </div>
+      <div class="dialogRow">
+        <!-- <p class="index">离校、返校时间：</p> -->
+        <el-date-picker
+          v-model="leftTime"
+          type="datetime"
+          placeholder="离校日期"
+          default-time="20:00:00"
+          format="yyyy-MM-dd hh:mm"
+          value-format="yyyy-MM-dd hh:mm"
+          style="width:100%"
+        ></el-date-picker>
+      </div>
+      <div class="dialogRow">
+        <el-date-picker
+          v-model="backTime"
+          type="datetime"
+          placeholder="返校日期"
+          default-time="20:00:00"
           format="yyyy-MM-dd hh:mm"
           value-format="yyyy-MM-dd hh:mm"
           style="width:100%"
@@ -157,11 +240,14 @@ export default {
   },
   data() {
     return {
+      screenWidth: document.body.clientWidth,
       newTarget: "",
       newCause: "回家",
       newEmergencyPeople: "我是紧急联系人",
       newEmergencyContact: "181****9984",
       newTimestamp: "",
+      leftTime: "",
+      backTime: "",
       newIsNanjing: true,
       CreateTrip: false,
       startTime: {
@@ -209,7 +295,18 @@ export default {
     },
     createTrip() {
       if (this.newTimestamp === "") {
-        this.$message("请选择你的离/返校时间！");
+        if (this.leftTime === "" && this.backTime === "") {
+          this.$message("请选择你的离/返校时间！");
+        } else {
+          if (this.leftTime === "") {
+            this.$message("请选择你的离校时间！");
+          }
+          if (this.backTime === "") {
+            this.$message("请选择你的返校时间！");
+          }
+          this.newTimestamp.push(this.leftTime);
+          this.newTimestamp.push(this.backTime);
+        }
       } else if (this.isTimeOverlap()) {
         this.$message("请勿与已有行程冲突！");
       } else if (this.newTarget === "") {
@@ -262,6 +359,15 @@ export default {
       }
       return false;
     }
+  },
+  mounted() {
+    const that = this;
+    window.onresize = () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth;
+        that.screenWidth = window.screenWidth;
+      })();
+    };
   }
 };
 </script>

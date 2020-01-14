@@ -49,13 +49,13 @@
       </el-form>
     </el-dialog>
     <el-tabs v-model="activeName">
-      <el-tab-pane label="待处理" name="first">
+      <el-tab-pane label="已处理" name="first">
         <div class="search-container">
           <el-input v-model="searchKey" placeholder="一卡通号/学号/姓名"></el-input>
           <el-button style="margin-left:10px;" type="primary" @click="search">搜索</el-button>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="已处理" name="second">
+      <el-tab-pane label="待处理" name="second">
         <div class="search-container">
           <el-input v-model="searchKey" placeholder="一卡通号/学号/姓名"></el-input>
           <el-button style="margin-left:10px;" type="primary" @click="search">搜索</el-button>
@@ -260,6 +260,8 @@ export default {
       this.modifyDialogVisible = true;
     },
     showDetail(row) {
+      if (this.detail.read === "未读")
+        this.detail.read = "已读";
       this.detail = row;
       this.dialogVisible = true;
     },
@@ -274,7 +276,7 @@ export default {
     },
     ensure() {
       this.detail.read = "已读";
-      console.log(this.detail.read);
+      //console.log(this.detail.read);
       this.dialogVisible = false;
     },
     submit() {

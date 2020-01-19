@@ -260,9 +260,9 @@ export default {
       this.modifyDialogVisible = true;
     },
     showDetail(row) {
+      this.detail = row;
       if (this.detail.read === "未读")
         this.detail.read = "已读";
-      this.detail = row;
       this.dialogVisible = true;
     },
     approval() {
